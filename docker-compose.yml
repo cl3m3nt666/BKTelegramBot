@@ -1,27 +1,18 @@
 version: '2'
 services:
-  db:
+  bkdb:
     image: mongo
-    container_name: db
+    hostname: db
     restart: always
-    expose:
-      - "27017"
-    networks:
-      - net
 
   bktelegram:
-    container_name: bktelegram
+    hostname: bktelegram
     restart: always
     build: .
     environment:
-      - "API_TOKEN=YOUR_APIKEY_HERE"
+      - "API_TOKEN=TOKEN"
       - PYTHONUNBUFFERED=0
-    depends_on:
-      - db
-    expose:
+    links:
+      - bkdb
+    ports:
       - "4000:4000"
-    networks:
-      - net
-
-networks:
-  net:
